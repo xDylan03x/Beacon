@@ -1,0 +1,75 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+    <div class="mb-4">
+        <h1 class="h1 text-color-dark">Dashboard</h1>
+        <p class="body text-color-muted mb-3">Welcome, {{ current_user.name }}</p>
+    </div>
+    <div class="admin-content-container">
+        <div class="admin-main-content" id="main-content">
+            <div class="padded mb-10 lg:mb-14">
+                <h2 class="h2 text-color-dark mb-3">My Conversations</h2>
+
+                <div class="flex flex-row justify-between w-full items-center p-2 rounded bg-color-accent mb-3">
+                    <div>
+                        <h3 class="h3-small text-color-dark">
+                            Showing {{ conversations|length }} {{ "conversation" if all_users|length == 1 else "conversations" }}</h3>
+                    </div>
+                    <div>
+                        <a class="button button-blue" href="{{ url_for('core.new_conversation') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                 class="size-5">
+                                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"/>
+                            </svg>
+                            New Conversation
+                        </a>
+                    </div>
+                </div>
+                <div class="w-full overflow-x-scroll">
+                    <table class="w-full divide-y divide-neutral-200 dark:divide-neutral-400" data-sortable>
+                        <thead class="bg-color-accent">
+                        <tr>
+                            <th scope="col" class="table-header" data-sortable="false">Users</th>
+                            <th scope="col" class="table-header-sortable">
+                                <p class="flex flex-row items-center gap-1">
+                                    Last Message
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                         stroke="currentColor" aria-hidden="true" class="size-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                                    </svg>
+                                </p>
+                            </th>
+                            <th scope="col" class="table-header" data-sortable="false">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-200 dark:divide-neutral-400">
+                        {% for conversation in conversations %}
+                            <tr>
+                                <td class="text-color-dark inline-flex items-center gap-1">
+                                    {{ conversation.formatted_users }}
+                                    {% if conversation.phone_call_id %}
+                                        <span class="inline-flex items-center gap-x-1.5 py-0.5 px-1.5 rounded text-xs font-base bg-emerald-100 text-emerald-800 dark:bg-teal-600/30 dark:text-teal-500">Phone Call</span>
+                                    {% endif %}
+                                </td>
+                                <td class="p-2 text-color-dark text-sm" id="last-message-{{ conversation.id }}"></td>
+                                <script>
+                                    var date = new Date('{{ conversation.conversation_last_updated_timestamp }} UTC');
+                                    document.getElementById('last-message-{{ conversation.id }}').textContent = date.toLocaleString();
+                                </script>
+                                <td class="p-2 text-color-dark">
+                                    <p class="flex flex-row gap-x-4 gap-y-2 flex-wrap">
+                                        <a type="button" class="button-sm button-blue-outline" href="{{ url_for('core.conversation', alt_id=conversation.alternate_id) }}">Chat</a>
+                                    </p>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <script src="{{ url_for('static', filename='js/sortable.min.js') }}"></script>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

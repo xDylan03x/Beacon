@@ -1,0 +1,11 @@
+<form hx-post="{{ url_for('core.conversation_notes', alt_id=conversation.alternate_id) }}" hx-swap="#form-container" hx-trigger="change">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+        <div class="relative">
+            {{ form.content(class="form-textarea", id="notes", type="text", rows=10) }}
+        </div>
+        {% for error in form.content.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+</form>

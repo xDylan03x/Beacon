@@ -1,0 +1,50 @@
+{% extends 'head.html' %}
+{% block body %}
+    {% include "header.html" %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed top-5 left-0 right-0 z-50 space-y-4">
+                {% for category, message in messages %}
+                    <div class="alert-container alert-{{ category }}"
+                         id="dismiss-alert-{{ loop.index }}" role="alert"
+                         tabindex="-1"
+                         aria-labelledby="hs-bordered-red-style-label">
+                        <div class="flex">
+                            <div class="ms-3">
+                                <h3 id="hs-bordered-red-style-label" class="h3-small text-color-dark capitalize">
+                                    {{ category }}
+                                </h3>
+                                <p class="body text-color-dark-2 text-sm">
+                                    {{ message }}
+                                </p>
+                            </div>
+                            <div class="ps-3 ms-auto">
+                                <div class="-mx-1.5 -my-1.5">
+                                    <button type="button"
+                                            class="inline-flex rounded-full p-2 text-black dark:text-neutral-200 border border-transparent hover:bg-white/10 focus:outline-none focus:bg-white/10"
+                                            data-hs-remove-element="#dismiss-alert-{{ loop.index }}">
+                                        <span class="sr-only">Dismiss</span>
+                                        <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24"
+                                             height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 6 6 18"></path>
+                                            <path d="m6 6 12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="grow min-h-screen md:min-h-0 p-4 pt-8 bg-color-admin">
+        <div class="max-w-7xl mx-auto" id="contentBlock">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+{% endblock %}

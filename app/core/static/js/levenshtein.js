@@ -1,0 +1,1 @@
+function levenshtein(n,e){if(0===n.length)return e.length;if(0===e.length)return n.length;n.length>e.length&&(t=n,n=e,e=t);var t,r,h,l,_=n.length,g=e.length,f=Array(_);for(r=0;r<=_;r++)f[r]=r;for(r=1;r<=g;r++){for(h=1,l=r;h<=_;h++)t=f[h-1],f[h-1]=l,l=Math.min(t+(e[r-1]!==n[h-1]),l+1,f[h]+1);f[h-1]=l}return l}

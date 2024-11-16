@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content-container padded">
+        <div class="text-center">
+            <h1 class="title text-color-dark">500</h1>
+            <h2 class="h2 text-color-muted">Internal Server Error</h2>
+            <p class="body text-color-dark mt-4">The server ran into an issue. Try your action again or <a class="link link-primary" href="{{ url_for('core.index') }}">go back home</a>.
+            </p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!-- Chat Bubble -->
+<ul class="space-y-5">
+    {% for message in messages %}
+        {% if message.user_id == current_user.id %}
+        <!-- Chat -->
+        <li class="flex ms-auto gap-x-2 sm:gap-x-4">
+            <div class="grow text-end space-y-3">
+                <!-- Card -->
+                <div class="inline-block bg-blue-600 rounded-2xl p-4 shadow-sm">
+                    <p class="text-sm text-white">
+                        {{ message.content }}
+                    </p>
+                </div>
+                <!-- End Card -->
+            </div>
+
+            <span class="shrink-0 inline-flex items-center justify-center size-[38px] rounded-full bg-gray-600">
+          <img class="shrink-0 size-[38px] rounded-full"
+               src="https://api.dicebear.com/9.x/initials/svg?seed={{ current_user.name }}&radius=50&backgroundColor=00897b,5e35b1,d81b60,3949ab,f4511e,fb8c00&fontSize=46"
+               alt="Avatar">
+        </span>
+        </li>
+        <!-- End Chat -->
+        {% else %}
+            <!-- Chat -->
+            <li class="max-w-lg flex gap-x-2 sm:gap-x-4 me-11">
+                <img class="shrink-0 size-[38px] rounded-full"
+                     src="https://api.dicebear.com/9.x/initials/svg?seed={{ message.user.name }}&radius=50&backgroundColor=00897b,5e35b1,d81b60,3949ab,f4511e,fb8c00&fontSize=46"
+                     alt="Avatar">
+
+                <!-- Card -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-3 dark:bg-neutral-900 dark:border-neutral-700">
+                    {{ message.content }}
+                </div>
+                <!-- End Card -->
+            </li>
+            <!-- End Chat -->
+        {% endif %}
+    {% endfor %}
+</ul>

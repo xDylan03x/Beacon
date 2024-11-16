@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if title %}
+        <title>{{ title }} | Beacon</title>
+    {% else %}
+        <title>Beacon</title>
+    {% endif %}
+
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/htmx.min.js') }}"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon//favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon//favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon//favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon//apple-touch-icon.png') }}" />
+    <meta name="apple-mobile-web-app-title" content="Beacon" />
+    <link rel="manifest" href="{{ url_for('static', filename='favicon//site.webmanifest') }}" />
+
+
+
+</head>
+<body class="flex flex-col min-h-screen">
+
+{% block body %}{% endblock %}
+
+<script src="{{ url_for('static', filename='js/preline.js') }}"></script>
+<script src="{{ url_for('static', filename='js/levenshtein.js') }}"></script>
+<script>
+    const fpPromise = import("{{ url_for('static', filename='js/fingerprint.js') }}")
+        .then(FingerprintJS => FingerprintJS.load())
+    fpPromise
+        .then(fp => fp.get())
+        .then(result => {
+            const visitorId = result.visitorId
+            document.cookie = `device_identifier=${visitorId}`
+        })
+</script>
+
+</body>
+</html>

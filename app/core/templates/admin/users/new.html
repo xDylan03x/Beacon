@@ -1,0 +1,32 @@
+<h2 class="h2 text-color-dark mb-3">New User</h2>
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        <div class="relative">
+            {{ form.name(class="form-input", id="name", type="text") }}
+        </div>
+        {% for error in form.name.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        <div class="relative">
+            {{ form.email(class="form-input", id="email", type="text") }}
+        </div>
+        {% for error in form.email.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+        <p class="form-help">The user will receive a welcome email with instructions to setup their account. Make sure this email is correct!</p>
+    </div>
+
+    <div class="flex justify-end">
+        {{ form.submit(class='button button-blue') }}
+    </div>
+
+</form>
+<script src="{{ url_for('static', filename='js/reset.js') }}"></script>

@@ -1,0 +1,173 @@
+{% if current_user.is_authenticated %}
+    <header class="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-neutral-800 border-color text-sm py-1.5">
+        <nav class="max-w-[85rem] mx-auto w-full flex basis-full items-center px-4">
+            <div class="flex-1 flex flex-row justify-end items-center gap-1">
+                {% if current_user.get_role('admin') %}
+                    <button type="button"
+                            class="size-[38px] relative inline-flex justify-center items-center gap-x-2 font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
+                            aria-haspopup="dialog" aria-expanded="false"
+                            aria-controls="admin-menu"
+                            data-hs-overlay="#admin-menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                             class="shrink-0 size-5" width="24" height="24">
+                            <path fill-rule="evenodd"
+                                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm0 8.625a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25ZM15.375 12a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0ZM7.5 10.875a1.125 1.125 0 1 0 0 2.25 1.125 1.125 0 0 0 0-2.25Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                        <span class="sr-only">Admin Menu</span>
+                    </button>
+                {% endif %}
+                <div class="mx-2 me-4">
+                    <div class="w-px h-4 bg-neutral-500"></div>
+                </div>
+
+                <!-- Dropdown -->
+                <div class="hs-dropdown [--placement:bottom-right] relative inline-flex">
+                    <button id="hs-dropdown-account" type="button"
+                            class="size-[38px] inline-flex justify-center items-center gap-x-2 font-semibold rounded-full border border-transparent focus:outline-none disabled:opacity-50 disabled:pointer-events-none dark:text-white"
+                            aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                        <img class="shrink-0 size-[38px] rounded-full"
+                             src="https://api.dicebear.com/9.x/initials/svg?seed={{ current_user.name }}&radius=50&backgroundColor=00897b,5e35b1,d81b60,3949ab,f4511e,fb8c00&fontSize=46"
+                             alt="Avatar">
+                    </button>
+
+                    <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-neutral-800 rounded shadow-md mt-2 border border-color"
+                         role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
+                        <div class="py-3 px-5 bg-neutral-700 text-neutral-200 rounded-t">
+                            <p class="text-sm">Signed in as</p>
+                            <p class="text-base">{{ current_user.email }}</p>
+                        </div>
+                        <div class="p-2 space-y-1">
+                            <a class="navigation-item-dark"
+                               href="{{ url_for('core.settings') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="shrink-0 size-5" width="24"
+                                     height="24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                </svg>
+                                Settings
+                            </a>
+                            <a class="navigation-item-dark"
+                               href="{{ url_for('core.logout') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                     class="shrink-0 size-5" width="24" height="24">
+                                    <path fill-rule="evenodd"
+                                          d="M16.5 3.75a1.5 1.5 0 0 1 1.5 1.5v13.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5V15a.75.75 0 0 0-1.5 0v3.75a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V5.25a3 3 0 0 0-3-3h-6a3 3 0 0 0-3 3V9A.75.75 0 1 0 9 9V5.25a1.5 1.5 0 0 1 1.5-1.5h6Zm-5.03 4.72a.75.75 0 0 0 0 1.06l1.72 1.72H2.25a.75.75 0 0 0 0 1.5h10.94l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 0 0-1.06 0Z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Dropdown -->
+            </div>
+        </nav>
+    </header>
+{% endif %}
+
+<header class="drop-shadow-md flex flex-wrap z-10 lg:justify-start lg:flex-nowrap w-full bg-neutral-800 py-3">
+    <nav class="max-w-[85rem] w-full mx-auto px-4 lg:flex lg:items-center lg:justify-between">
+        <div class="flex items-center justify-between">
+            <a class="flex-none text-xl font-semibold dark:text-white focus:outline-none"
+               href="{{ url_for('core.index') }}"
+               aria-label="Brand">
+                <img class="w-24 h-auto" width="45" height="45" loading="eager"
+                     src="{{ url_for('static', filename='images/logo.png') }}"
+                     alt="Beacon logo" title="Logo">
+            </a>
+            <div class="lg:hidden">
+                <button type="button"
+                        class="hs-collapse-toggle relative flex justify-center items-center gap-x-2 bg-transparent shadow-sm hover:bg-white/10 rounded p-2 focus:outline-none"
+                        id="header-navbar-collapse" aria-expanded="false" aria-controls="header-navbar"
+                        aria-label="Toggle navigation" data-hs-collapse="#header-navbar">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white" class="size-6">
+                        <path fill-rule="evenodd"
+                              d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Zm0 5.25a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+            </div>
+        </div>
+        <div id="header-navbar"
+             class="hidden hs-collapse overflow-hidden transition-all duration-150 basis-full grow lg:block"
+             aria-labelledby="header-navbar-collapse">
+            <div class="flex flex-col gap-1 mt-5 lg:flex-row lg:items-center lg:justify-end lg:mt-0 lg:ps-5">
+                <a class="header-link" href="{{ url_for('core.index') }}">Home</a>
+                {% if current_user.is_authenticated %}
+                    <a class="header-link" href="{{ url_for('core.dashboard') }}">Dashboard</a>
+                {% endif %}
+                {% if current_user.is_anonymous %}
+                    <a class="header-link" href="{{ url_for('core.login') }}">Log In</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>
+
+{% if current_user.is_authenticated %}
+    <div id="admin-menu"
+         class="hs-overlay hs-overlay-backdrop-open:bg-black/70 hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
+         role="dialog" tabindex="-1" aria-labelledby="admin-menu-label">
+        <div class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)]">
+            <div class="w-full flex flex-col border border-color rounded pointer-events-auto bg-white dark:bg-neutral-800 shadow">
+                <div class="border-b border-color py-3 px-4">
+                    <div class="relative">
+                        <input class="form-input" id="admin-menu-search" type="text"
+                               placeholder="Search for pages..." oninput="filterLinks()" autofocus="">
+                    </div>
+                </div>
+                <script>
+                    function filterLinks() {
+                        const input = document.getElementById('admin-menu-search').value.toLowerCase();
+                        document.querySelectorAll('.admin-menu-option').forEach(link => {
+                            const keywords = link.getAttribute('data-keywords').toLowerCase();
+                            const keywordList = keywords.split(' ');
+                            const match = keywordList.some(keyword =>
+                                keyword.includes(input) || levenshtein(keyword, input) <= 2
+                            );
+                            link.style.display = match ? '' : 'none';
+                        });
+                    }
+
+                    window.addEventListener("keydown", function (evt) {
+                        if (evt.code === "Backslash" && evt.ctrlKey === true) {
+                            const overlay = HSOverlay.getInstance('[data-hs-overlay="#admin-menu"]', true);
+                            const combobox = HSComboBox.getInstance('#admin-menu [data-hs-combo-box]', true);
+
+                            if (overlay.element && overlay.element.overlay.classList.contains('open')) return false;
+
+                            overlay.element.open();
+                            combobox.element.setCurrent();
+                        }
+                    });
+                </script>
+                <div class="py-3 px-4 overflow-y-auto">
+                    <div class="space-y-1">
+
+                        {% if current_user.get_role('admin') %}
+                            <div class="admin-menu-option space-y-0.5" id="users"
+                                 data-keywords="users accounts manage">
+                                <a class="navigation-item-light"
+                                   href="{{ url_for('core.users') }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="shrink-0 size-5" width="24"
+                                         height="24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                                    </svg>
+                                    Users
+                                </a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

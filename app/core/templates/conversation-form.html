@@ -1,0 +1,18 @@
+<form hx-post="{{ url_for('core.conversation_form', alt_id=conversation.alternate_id) }}" hx-swap="#form-container">
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+        {{ form.message.label(class="form-label") }}
+        <div class="relative">
+            {{ form.message(class="form-input", id="message", type="text") }}
+        </div>
+        {% for error in form.message.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="flex justify-end">
+        {{ form.submit(class='button button-blue') }}
+    </div>
+
+</form>

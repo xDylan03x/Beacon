@@ -1,0 +1,60 @@
+<h2 class="h2 text-color-dark mb-3">Security</h2>
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+
+    <div class="flex items-center mb-3">
+        <div class="flex">
+            {{ form.two_factor_auth(class="form-checkbox", id="two_factor_auth", type="checkbox") }}
+        </div>
+        {{ form.two_factor_auth.label(class="form-label ps-2 pb-0 mb-0") }}
+    </div>
+
+    <div class="mb-3">
+        <p class="form-label">Password</p>
+        <a class="button-sm button-blue-outline" href="{{ url_for('core.change_password') }}">Change Password</a>
+        <p class="form-help">Last changed: <span id="password-last-changed"></span></p>
+        <script>
+            var date = new Date('{{ current_user.password_last_changed_timestamp }} UTC');
+            document.getElementById('password-last-changed').textContent = date.toLocaleString();
+        </script>
+    </div>
+
+    <div class="mb-3">
+        <p class="form-label">Lockdown Account</p>
+        <button type="button" class="button-sm button-red-outline" aria-haspopup="dialog" aria-expanded="false" aria-controls="lockdown-account-modal" data-hs-overlay="#lockdown-account-modal">Secure Now</button>
+        <p class="form-help">Secure your account in the event of an emergency. This will log you out on all devices,
+            remove all trusted devices, remove all roles, and disable your account. An administrator will have to re-enable you account
+            for you to gain access.</p>
+    </div>
+
+    <div class="flex justify-end">
+        {{ form.submit(class='button button-blue') }}
+    </div>
+
+</form>
+
+
+<div id="lockdown-account-modal" class="hs-overlay hs-overlay-backdrop-open:bg-black/70 hidden modal-container" role="dialog" tabindex="-1" aria-labelledby="lockdown-account-modal-label">
+    <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-200 modal-center">
+        <div class="modal-body">
+            <div class="modal-header">
+                <h3 id="lockdown-account-modal-label" class="h3-small text-color-dark">
+                    Lockdown Account
+                </h3>
+            </div>
+            <div class="py-3 px-4 overflow-y-auto">
+                <p class="body text-color-dark">Are you sure you want to lockdown your account? This action will make irreversible changes and your account can only be unlocked by an admin.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="button-sm button-muted" data-hs-overlay="#lockdown-account-modal">
+                    Cancel
+                </button>
+                <a class="button-sm button-red-outline" href="{{ url_for('core.lockdown_account', alt_id=current_user.alternate_id) }}">
+                    Lockdown Account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/reset.js') }}"></script>

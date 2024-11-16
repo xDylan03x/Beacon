@@ -1,0 +1,78 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+    <div class="mb-4">
+        <h1 class="h1 text-color-dark">Conversation
+            <button type="button"
+                    class="size-[38px] relative inline-flex justify-center items-center gap-x-2 font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
+                    aria-haspopup="dialog" aria-expanded="false"
+                    aria-controls="notes-menu"
+                    data-hs-overlay="#notes-menu" hx-get="{{ url_for('core.conversation_notes', alt_id=conversation.alternate_id) }}" hx-target="#note-content" hx-trigger="click">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="shrink-0 size-5 text-color-dark" width="24" height="24">
+                    <path d="m2.695 14.762-1.262 3.155a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.886L17.5 5.501a2.121 2.121 0 0 0-3-3L3.58 13.419a4 4 0 0 0-.885 1.343Z" />
+                </svg>
+                <span class="sr-only">Notes</span>
+            </button>
+        </h1>
+        <p class="body text-color-muted mb-3">{{ conversation.formatted_users }}<br>
+            <a href="https://meet.google.com/landing" target="_blank" class="link link-primary">Join Google Meet</a>
+        </p>
+    </div>
+    <div class="admin-content-container mb-2">
+        {% if not conversation.phone_call_id %}
+            <div class="admin-main-content h-96" id="main-content" hx-get="{{ url_for('core.conversation_messages', alt_id=conversation.alternate_id) }}" hx-trigger="load, every 2s">
+            </div>
+        {% else %}
+            <div class="admin-main-content h-96" id="main-content">
+                <h3 class="h3 text-color-dark mb-2">Call Transcription</h3>
+
+                <h3 class="h3-small text-color-dark-2">Call Information</h3>
+                <p class="body text-color-muted mb-3">
+                    <strong>Call Status:</strong> {{ phone_call.call_status }}<br>
+                    <strong>Recording URL:</strong> <a href="{{ phone_call.recording_url }}" target="_blank" class="link link-muted">{{ phone_call.recording_url }}</a><br>
+                    <strong>From Number:</strong> {{ phone_call.from_number }}<br>
+                    <strong>From City:</strong> {{ phone_call.from_city }}<br>
+                    <strong>From State:</strong> {{ phone_call.from_state }}<br>
+                    <strong>From Zip:</strong> {{ phone_call.from_zip }}<br>
+                    <strong>To Number:</strong> {{ phone_call.to_number }}
+                </p>
+
+                <h3 class="h3-small text-color-dark-2">Transcription</h3>
+                <p class="body text-color-dark-2">{{ phone_call.transcription }}</p>
+            </div>
+        {% endif %}
+    </div>
+    {% if not conversation.phone_call_id %}
+        <div class="admin-content-container">
+            <div class="admin-main-content" id="form-container">
+                <div hx-get="{{ url_for('core.conversation_form', alt_id=conversation.alternate_id) }}" hx-trigger="load" hx-target="#form-container"></div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div id="notes-menu"
+         class="hs-overlay hs-overlay-backdrop-open:bg-black/70 hs-overlay-open:translate-x-0 hidden translate-x-full fixed top-0 end-0 transition-all duration-200 transform h-full max-w-xs w-full z-[80] bg-white dark:bg-neutral-800 border-e border-color [--body-scroll:true]"
+         role="dialog" tabindex="-1" aria-labelledby="notes-menu-label">
+        <div class="flex justify-between items-center py-3 px-4 border-b border-color">
+            <h3 id="notes-menu-label" class="h3-small text-color-dark">
+                Notes
+            </h3>
+            <button type="button"
+                    class="inline-flex rounded-full p-2 text-color-dark-2 border border-transparent hover:bg-black/10 dark:hover:bg-white/10 focus:outline-none"
+                    aria-label="Close" data-hs-overlay="#notes-menu">
+                <span class="sr-only">Close</span>
+                <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="p-4 body text-color-dark" id="note-content">
+
+        </div>
+    </div>
+
+{% endblock %}
+

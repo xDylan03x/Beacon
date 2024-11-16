@@ -1,0 +1,55 @@
+<h2 class="h2 text-color-dark mb-3">Edit {{ user.name }}</h2>
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+
+    <div class="mb-3">
+        <div class="flex items-center">
+            <div class="flex">
+                {% if not current_user.get_role("admin") and user.get_role("admin") %}
+                {{ form.admin(class="form-checkbox", id="admin", type="checkbox", disabled=True) }}
+                {% else %}
+                {{ form.admin(class="form-checkbox", id="admin", type="checkbox") }}
+                {% endif %}
+            </div>
+            {{ form.admin.label(class="form-label ps-2 pb-0 mb-0") }}
+        </div>
+        <p class="form-help">Admins can edit application settings and more.</p>
+    </div>
+
+    <div class="mb-3">
+        <div class="flex items-center">
+            <div class="flex">
+                {{ form.doctor(class="form-checkbox", id="doctor", type="checkbox") }}
+            </div>
+            {{ form.doctor.label(class="form-label ps-2 pb-0 mb-0") }}
+        </div>
+        <p class="form-help">Doctors can read patient notes and interact with others.</p>
+    </div>
+
+    <div class="mb-3">
+        <div class="flex items-center">
+            <div class="flex">
+                {{ form.patient(class="form-checkbox", id="patient", type="checkbox") }}
+            </div>
+            {{ form.patient.label(class="form-label ps-2 pb-0 mb-0") }}
+        </div>
+        <p class="form-help">Patients can interact with their doctors.</p>
+    </div>
+
+    <div class="mb-3">
+        <div class="flex items-center">
+            <div class="flex">
+                {{ form.active(class="form-checkbox", id="active", type="checkbox") }}
+            </div>
+            {{ form.active.label(class="form-label ps-2 pb-0 mb-0") }}
+        </div>
+        <p class="form-help">Inactive users cannot log in to their accounts. Disabling this will also log out the user on all devices.</p>
+    </div>
+
+    <div class="flex justify-end">
+        {{ form.submit(class='button button-blue') }}
+    </div>
+
+</form>
+<script src="{{ url_for('static', filename='js/reset.js') }}"></script>

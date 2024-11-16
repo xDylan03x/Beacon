@@ -1,0 +1,15 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+    <div class="mb-4">
+        <h1 class="h1 text-color-dark">Users</h1>
+        <p class="body text-color-muted mb-3">Create new users and manage existing ones.</p>
+    </div>
+    <div class="admin-content-container">
+        <div class="admin-main-content" id="main-content">
+            <div hx-get="{{ url_for('core.users', tab=request.args.get('tab', 'all-users')) }}" hx-trigger="load" hx-target="#main-content"></div>
+        </div>
+    </div>
+
+{% endblock %}
+

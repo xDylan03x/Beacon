@@ -1,0 +1,101 @@
+<h2 class="h2 text-color-dark mb-3">All Users</h2>
+
+<div class="flex flex-row justify-between w-full items-center p-2 rounded bg-color-accent mb-3">
+    <div>
+        <h3 class="h3-small text-color-dark">Showing {{ all_users|length }} {{ "user" if all_users|length == 1 else "users" }}</h3>
+    </div>
+    <div>
+        <button type="button" class="button button-blue" hx-get="{{ url_for('core.users', tab="new") }}" hx-target="#main-content" hx-push-url="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                 class="size-5">
+                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"/>
+            </svg>
+            New User
+        </button>
+    </div>
+</div>
+{% if all_users %}
+    <div class="w-full overflow-x-scroll">
+        <table class="w-full divide-y divide-neutral-200 dark:divide-neutral-400" data-sortable>
+            <thead class="bg-color-accent">
+            <tr>
+                <th scope="col" class="table-header-sortable">
+                    <p class="flex flex-row items-center gap-1">
+                        User
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor" aria-hidden="true" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                        </svg>
+                    </p>
+                </th>
+                <th scope="col" class="table-header-sortable">
+                    <p class="flex flex-row items-center gap-1">
+                        Status
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor" aria-hidden="true" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                        </svg>
+                    </p>
+                </th>
+                <th scope="col" class="table-header-sortable">
+                    <p class="flex flex-row items-center gap-1">
+                        Last Login
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor" aria-hidden="true" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                        </svg>
+                    </p>
+                </th>
+                <th scope="col" class="table-header" data-sortable="false">Roles</th>
+                <th scope="col" class="table-header" data-sortable="false">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-neutral-200 dark:divide-neutral-400">
+            {% for user in all_users %}
+                <tr>
+                    <td class="p-2 text-color-dark flex flex-row gap-4 items-center" data-value="{{ user.name }}">
+                        <img class="shrink-0 size-[38px] rounded-full"
+                             src="https://api.dicebear.com/9.x/initials/svg?seed={{ user.name }}&radius=50&backgroundColor=00897b,5e35b1,d81b60,3949ab,f4511e,fb8c00&fontSize=46"
+                             alt="Avatar">
+                        <div>
+                            <p class="text-color-dark inline-flex items-center gap-1">
+                                {{ user.name}}
+                                {% if user.two_factor_auth %}
+                                    <span class="inline-flex items-center gap-x-1.5 py-0.5 px-1.5 rounded text-xs font-base bg-emerald-100 text-emerald-800 dark:bg-teal-600/30 dark:text-teal-500">2FA</span>
+                                {% endif %}
+                            </p>
+                            <p class="text-color-muted text-sm">{{ user.email }}</p>
+                        </div>
+                    </td>
+                    <td class="p-2 text-color-dark text-sm">
+                        {% if user.active %}
+                            Active
+                        {% else %}
+                            Inactive
+                        {% endif %}
+                    </td>
+                    <td class="p-2 text-color-dark text-sm" id="last-login-{{ user.id }}"></td>
+                    <script>
+                        var date = new Date('{{ user.last_login.timestamp }} UTC');
+                        document.getElementById('last-login-{{ user.id }}').textContent = date.toLocaleString();
+                    </script>
+                    <td class="p-2 text-color-dark">
+                        {% for role in user.roles %}
+                            {% if role.value %}
+                                <span class="inline-flex items-center gap-x-1.5 py-0.5 px-1.5 rounded text-xs font-base bg-gray-100 text-gray-800 dark:bg-white/10 dark:text-white">{{ role.formatted_name }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="p-2 text-color-dark">
+                        <p class="flex flex-row gap-x-4 gap-y-2 flex-wrap">
+                            <button type="button" class="button-sm button-blue-outline" hx-get="{{ url_for('core.users', tab="edit", alt_id=user.alternate_id) }}" hx-target="#main-content" hx-push-url="true">Edit</button>
+                        </p>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+<script src="{{ url_for('static', filename='js/sortable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/reset.js') }}"></script>

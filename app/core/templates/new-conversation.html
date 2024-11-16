@@ -1,0 +1,46 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+    <div class="mb-4">
+        <h1 class="h1 text-color-dark">New Conversation</h1>
+        <p class="body text-color-muted mb-3">Create a new conversation to talk between doctors and patients.</p>
+    </div>
+    <div class="admin-content-container">
+        <div class="admin-main-content" id="main-content">
+            <form action="" method="post">
+                {{ form.csrf_token }}
+
+                <div class="mb-3">
+                    {{ form.doctors.label(class="form-label") }}
+                    <div class="relative">
+                        {{ form.doctors(class="form-select", id="email", type="select") }}
+                    </div>
+                    {% for error in form.doctors.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.patient.label(class="form-label") }}
+                    <div class="relative">
+                        {% if current_user.get_role('patient') %}
+                            {{ form.patient(class="form-select", id="name", type="select", disabled=True) }}
+                        {% else %}
+                            {{ form.patient(class="form-select", id="name", type="select") }}
+                        {% endif %}
+                    </div>
+                    {% for error in form.patient.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="flex justify-end">
+                    {{ form.submit(class='button button-blue') }}
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

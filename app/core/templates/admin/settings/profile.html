@@ -1,0 +1,50 @@
+<h2 class="h2 text-color-dark mb-3">Profile</h2>
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+
+    <div class="flex flow-row justify-between gap-x-2 mb-3">
+        <div class="w-full">
+            <label for="username" class="form-label">Username</label>
+            <div class="relative">
+                <input class="form-input" id="username" type="text" value="{{ current_user.username }}" disabled>
+            </div>
+        </div>
+
+        <div class="w-full">
+            <label for="email" class="form-label">Email</label>
+            <div class="relative">
+                <input class="form-input" id="email" type="text" value="{{ current_user.email }}" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        <div class="relative">
+            {{ form.name(class="form-input", id="name", type="text") }}
+        </div>
+        {% for error in form.name.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="mb-3">
+        {{ form.phone_number.label(class="form-label") }}
+        <div class="relative">
+            {{ form.phone_number(class="form-input", id="phone_number", type="tel") }}
+        </div>
+        {% for error in form.phone_number.errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+        <p class="form-help">Enter your number in a common format (+11234567890, 123-456-7890, etc.). Valid for US numbers only.</p>
+    </div>
+
+
+    <div class="flex justify-end">
+        {{ form.submit(class='button button-blue') }}
+    </div>
+
+
+</form>
+<script src="{{ url_for('static', filename='js/reset.js') }}"></script>
